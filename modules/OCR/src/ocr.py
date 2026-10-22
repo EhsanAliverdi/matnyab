@@ -1,6 +1,5 @@
 import os,shutil
 import re
-import threading
 import pytesseract
 from pdf2image import convert_from_path
 from .preprocess import *
@@ -33,14 +32,15 @@ THREAD_COUNT = 1
 USERPWD = None
 USE_CROPBOX = False
 STRICT = False
-SUPPORTED_IMG_FORMAT = ['.png', '.jpg', '.jpeg', '.tiff']
+SUPPORTED_IMG_FORMAT = ['.png', '.jpg', '.jpeg', '.tif', '.tiff']
 
 
 class ocr:
     
     def __init__(self,input:str, input_type:str, output_folder : str,
                 single_file : bool = True, per_page_file : bool = False,
-                ms_world_output: bool = True, plain_text_output : bool = True):
+                ms_world_output: bool = True, plain_text_output : bool = True,
+                langs : str = LANGS, dpi : int = DPI, poppler_path : str = None):
 
         if input_type not in ("FOLDER", "FILE"):
             raise Exception('InvalidInputType: input_type Must be "FOLDER" or "FILE"')
@@ -51,6 +51,11 @@ class ocr:
         self.plain_text_file = plain_text_output
         self.per_page_file = per_page_file
         self.ms_world_output = ms_world_output
+        self.langs = langs
+        self.dpi = dpi
+        self.poppler_path = poppler_path or None
+        self.progress_callback = None
+        self.status_callback = None
 
         
         self.temp_folder = tempfile.mkdtemp()
@@ -69,7 +74,8 @@ class ocr:
         if input_type == "FOLDER":
             for filename in os.listdir(self.input):
                 fullName = os.path.join(self.input, filename)
-                shutil.copy2(fullName, self.temp_data_folder)
+                if os.path.isfile(fullName):
+                    shutil.copy2(fullName, self.temp_data_folder)
         if input_type == "FILE": 
             shutil.copy2(self.input, self.temp_data_folder)
         
@@ -91,21 +97,30 @@ class ocr:
 
     
 
-    def main(self, progress_callback):
+    def _report(self, percent=None, status=None):
+        if percent is not None and self.progress_callback is not None:
+            self.progress_callback.emit(int(percent))
+        if status is not None and self.status_callback is not None:
+            self.status_callback.emit(status)
+
+    def main(self, progress_callback=None, status_callback=None):
+        self.progress_callback = progress_callback
+        self.status_callback = status_callback
         if (self.ms_world_output or self.plain_text_file) and (self.single_file or self.per_page_file):
-            threads = []
-            threads.append(threading.Thread(target=self._convertPdfToImg))
-            threads.append(threading.Thread(target=self._moveImagesToTempTiff))
-            threads.append(threading.Thread(target=self._convertImageToText))
-            self.progress_callback = progress_callback
-            
-            for th in threads:
-                #th.daemon = True
-                th.start()
-                th.join()
-            
-            self._create_text_output()
-            self._create_msworrd_output()
+            has_pdf = any(f.lower().endswith('.pdf') for f in os.listdir(self.temp_data_folder))
+            # PDF page extraction takes the first 30% of the bar, OCR the rest
+            self.ocr_progress_start = 30 if has_pdf else 0
+            self._report(0, 'Preparing files...')
+            self._convertPdfToImg()
+            self._moveImagesToTempTiff()
+            self._convertImageToText()
+
+            self._report(99, 'Writing output files...')
+            if self.plain_text_file:
+                self._create_text_output()
+            if self.ms_world_output:
+                self._create_msworrd_output()
+            self._report(100, 'Done')
 
 
         # Evaluate the result based on Levenshtein distance
@@ -115,35 +130,39 @@ class ocr:
         print('------------------DONE-------------------')
     
     def _convertImageToText(self):
-        for filename in os.listdir(self.temp_processed_images):
-            if filename.endswith(tuple(SUPPORTED_IMG_FORMAT)):
-                print(f'Creating Text File from :{filename}')
-                fileAddress = os.path.join(self.temp_processed_images, filename)
-                img = preprocess().process_image(fileAddress)
+        images = [f for f in natsort.natsorted(os.listdir(self.temp_processed_images))
+                  if f.lower().endswith(tuple(SUPPORTED_IMG_FORMAT))]
+        start = getattr(self, 'ocr_progress_start', 0)
+        for index, filename in enumerate(images, start=1):
+            self._report(status=f'Recognising text: page {index} of {len(images)}')
+            print(f'Creating Text File from :{filename}')
+            fileAddress = os.path.join(self.temp_processed_images, filename)
+            img = preprocess().process_image(fileAddress)
 
-                # Recognize the text as string in image using pytesserct
-                config = ''
-                print(f'\tRecognize the text for :{filename}')
-                text = str(pytesseract.image_to_string(img, lang=LANGS, config=config))
+            # Recognize the text as string in image using pytesserct
+            config = ''
+            print(f'\tRecognize the text for :{filename}')
+            text = str(pytesseract.image_to_string(img, lang=self.langs, config=config))
 
-                # Remove empty lines of text - s.strip() removes lines with spaces
-                text = os.linesep.join([s for s in text.splitlines() if s.strip()])
+            # Remove empty lines of text - s.strip() removes lines with spaces
+            text = os.linesep.join([s for s in text.splitlines() if s.strip()])
 
-                # Creating a text file to write the output
-                print(f'\tCreating a text file for :{filename}')
-                outfile = os.path.join(self.temp_text_folder, "out_" + os.path.splitext(filename)[0] + ".txt")
-                with open(outfile, 'w', encoding="utf-8") as text_file:
-                    print(text, file=text_file)
+            # Creating a text file to write the output
+            print(f'\tCreating a text file for :{filename}')
+            outfile = os.path.join(self.temp_text_folder, "out_" + os.path.splitext(filename)[0] + ".txt")
+            with open(outfile, 'w', encoding="utf-8") as text_file:
+                print(text, file=text_file)
+            self._report(start + (98 - start) * index / len(images))
 
 
     
     def _moveImagesToTempTiff(self):
         for filename in os.listdir(self.temp_data_folder):
-            if filename.endswith(tuple(SUPPORTED_IMG_FORMAT)):
+            if filename.lower().endswith(tuple(SUPPORTED_IMG_FORMAT)):
                 fullName = os.path.join(self.temp_data_folder, filename)
                 shutil.copy2(fullName, self.temp_tiff_folder)
         for filename in os.listdir(self.temp_tiff_folder):
-            if filename.endswith(tuple(SUPPORTED_IMG_FORMAT)):
+            if filename.lower().endswith(tuple(SUPPORTED_IMG_FORMAT)):
                 fullName = os.path.join(self.temp_tiff_folder, filename)
                 shutil.copy2(fullName, self.temp_processed_images)
         
@@ -162,10 +181,11 @@ class ocr:
     def _convertPdfToImg(self):
         for filename in os.listdir(self.temp_data_folder):
             # Convert pdf to image files
-            if filename.endswith('.pdf'):
+            if filename.lower().endswith('.pdf'):
                 print(f'Converting pdf {filename} to image')
+                self._report(status=f'Reading pages from {filename}...')
                 fullName = os.path.join(self.temp_data_folder, filename)
-                pages = convert_from_path(fullName, dpi=DPI, output_folder=self.temp_image_output_folder, first_page=FIRST_PAGE, last_page=LAST_PAGE, fmt=FORMAT, thread_count=THREAD_COUNT, userpw=USERPWD, use_cropbox=USE_CROPBOX, strict=STRICT)
+                pages = convert_from_path(fullName, dpi=self.dpi, output_folder=self.temp_image_output_folder, first_page=FIRST_PAGE, last_page=LAST_PAGE, fmt=FORMAT, thread_count=THREAD_COUNT, userpw=USERPWD, use_cropbox=USE_CROPBOX, strict=STRICT, poppler_path=self.poppler_path)
 
                 #pages = convert_from_path(fullName, 500)
                 image_counter = 1
@@ -178,7 +198,7 @@ class ocr:
                     image_name = self.temp_tiff_folder +'\\'+ pdf_name + '___PAGE___' + str(image_counter) + '.tiff'
                     #image_name = os.path.splitext(fullName)[0] + '_' + str(image_counter) + '.tiff'
                     page.save(image_name, format='TIFF')
-                    self.progress_callback.emit(image_counter*100/total)
+                    self._report(image_counter * self.ocr_progress_start / total)
                     image_counter += 1
         return True
 
