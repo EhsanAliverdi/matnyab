@@ -56,7 +56,7 @@ Left Menu */
 	background-position: centered;
 	background-repeat: no-repeat;
 }
-#titleLeftApp { font: 63 12pt "Segoe UI Semibold"; }
+#titleLeftApp { font: 600 12pt "Segoe UI"; }
 #titleLeftDescription { font: 8pt "Segoe UI"; color: rgb(189, 147, 249); }
 
 /* MENUS */
@@ -131,7 +131,7 @@ Extra Tab */
 #extraIcon {
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url(:/icons/images/icons/icon_settings.png);
+	background-image: url(:/icons/images/icons/nav_settings.png);
 }
 
 /* Label */
@@ -378,9 +378,9 @@ QCheckBox::indicator:hover {
     border: 3px solid rgb(58, 66, 81);
 }
 QCheckBox::indicator:checked {
-    background: 3px solid rgb(52, 59, 72);
-	border: 3px solid rgb(52, 59, 72);	
-	background-image: url(:/icons/images/icons/cil-check-alt.png);
+    background: 3px solid rgb(189, 147, 249);
+	border: 3px solid rgb(189, 147, 249);	
+	background-image: url(:/icons/images/icons/ui_check_dark.png);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -421,7 +421,7 @@ QComboBox::drop-down {
 	border-left-style: solid;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;	
-	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
+	background-image: url(:/icons/images/icons/ui_chevron_down.png);
 	background-position: center;
 	background-repeat: no-reperat;
  }

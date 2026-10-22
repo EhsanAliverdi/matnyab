@@ -75,7 +75,7 @@ Left Menu */
 	background-position: centered;
 	background-repeat: no-repeat;
 }
-#titleLeftApp { font: 63 12pt "Segoe UI Semibold"; }
+#titleLeftApp { font: 600 12pt "Segoe UI"; }
 #titleLeftDescription { font: 8pt "Segoe UI"; color: rgb(189, 147, 249); }
 
 /* MENUS */
@@ -150,7 +150,7 @@ Extra Tab */
 #extraIcon {
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url(:/icons/images/icons/icon_settings.png);
+	background-image: url(:/icons/images/icons/nav_settings.png);
 }
 
 /* Label */
@@ -397,9 +397,9 @@ QCheckBox::indicator:hover {
     border: 3px solid rgb(58, 66, 81);
 }
 QCheckBox::indicator:checked {
-    background: 3px solid rgb(52, 59, 72);
-	border: 3px solid rgb(52, 59, 72);	
-	background-image: url(:/icons/images/icons/cil-check-alt.png);
+    background: 3px solid rgb(189, 147, 249);
+	border: 3px solid rgb(189, 147, 249);	
+	background-image: url(:/icons/images/icons/ui_check_dark.png);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -440,7 +440,7 @@ QComboBox::drop-down {
 	border-left-style: solid;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;	
-	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
+	background-image: url(:/icons/images/icons/ui_chevron_down.png);
 	background-position: center;
 	background-repeat: no-reperat;
  }
@@ -784,7 +784,7 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/icon_menu.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_menu.png);</string>
                   </property>
                   <property name="text">
                    <string>Hide menu</string>
@@ -846,7 +846,7 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-home.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_home.png);</string>
                   </property>
                   <property name="text">
                    <string>Home</string>
@@ -865,7 +865,7 @@ Button */
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-description.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_pdf.png);</string>
                   </property>
                   <property name="text">
                    <string>PDF to Text</string>
@@ -900,7 +900,7 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-image1.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_image.png);</string>
                   </property>
                   <property name="text">
                    <string>Image to Text</string>
@@ -935,7 +935,7 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-layers.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_batch.png);</string>
                   </property>
                   <property name="text">
                    <string>Batch Folder</string>
@@ -997,7 +997,7 @@ Button */
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/icon_settings.png);</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/nav_settings.png);</string>
                   </property>
                   <property name="text">
                    <string>Settings</string>
@@ -1190,7 +1190,7 @@ Button */
                   </property>
                   <property name="icon">
                    <iconset resource="resources.qrc">
-                    <normaloff>:/icons/images/icons/icon_minimize.png</normaloff>:/icons/images/icons/icon_minimize.png</iconset>
+                    <normaloff>:/icons/images/icons/win_minimize.png</normaloff>:/icons/images/icons/win_minimize.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -1233,7 +1233,7 @@ Button */
                   </property>
                   <property name="icon">
                    <iconset resource="resources.qrc">
-                    <normaloff>:/icons/images/icons/icon_maximize.png</normaloff>:/icons/images/icons/icon_maximize.png</iconset>
+                    <normaloff>:/icons/images/icons/win_maximize.png</normaloff>:/icons/images/icons/win_maximize.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -1268,7 +1268,7 @@ Button */
                   </property>
                   <property name="icon">
                    <iconset resource="resources.qrc">
-                    <normaloff>:/icons/images/icons/icon_close.png</normaloff>:/icons/images/icons/icon_close.png</iconset>
+                    <normaloff>:/icons/images/icons/win_close.png</normaloff>:/icons/images/icons/win_close.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>

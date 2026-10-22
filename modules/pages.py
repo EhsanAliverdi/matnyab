@@ -22,8 +22,8 @@ PALETTES = {
              "accent_hover": "#cba6fa", "ok": "#50fa7b", "error": "#ff5555", "hover": "rgb(40, 44, 52)",
              "input": "rgb(27, 29, 35)"},
     "light": {"card": "#ffffff", "border": "#d6d9e0", "text": "#333333",
-              "muted": "#6272a4", "accent": "#6272a4", "accent_text": "#ffffff",
-              "accent_hover": "#7584b8", "ok": "#2e9d4c", "error": "#d63c3c", "hover": "#f0f1f6",
+              "muted": "#795da9", "accent": "#795da9", "accent_text": "#ffffff",
+              "accent_hover": "#8c70bd", "ok": "#2e9d4c", "error": "#d63c3c", "hover": "#f0f1f6",
               "input": "#eef0f5"},
 }
 
@@ -186,9 +186,9 @@ class HomePage(ScrollPage):
         actions = QGridLayout()
         actions.setSpacing(14)
         items = [
-            ("pdf", ":/icons/images/icons/pdf_ocr.png", "PDF to Text", "Convert every page of a scanned PDF."),
-            ("image", ":/icons/images/icons/Image_OCR.png", "Image to Text", "Convert a single scanned image or photo."),
-            ("batch", ":/icons/images/icons/batch_ocr.png", "Batch Folder", "Convert all images and PDFs in a folder."),
+            ("pdf", ":/icons/images/icons/tile_pdf.png", "PDF to Text", "Convert every page of a scanned PDF."),
+            ("image", ":/icons/images/icons/tile_image.png", "Image to Text", "Convert a single scanned image or photo."),
+            ("batch", ":/icons/images/icons/tile_batch.png", "Batch Folder", "Convert all images and PDFs in a folder."),
         ]
         for i, (key, icon, title, text) in enumerate(items):
             actions.addWidget(self._action_card(key, icon, title, text), 0, i)
@@ -210,7 +210,7 @@ class HomePage(ScrollPage):
         layout.setContentsMargins(18, 18, 18, 18)
         layout.setSpacing(6)
         pic = QLabel()
-        pic.setPixmap(QPixmap(icon).scaled(72, 72, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        pic.setPixmap(QPixmap(icon))
         pic.setAttribute(Qt.WA_TransparentForMouseEvents)
         t = QLabel(title)
         t.setObjectName("cardTitle")

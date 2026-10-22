@@ -66,7 +66,7 @@ python setup.py build
 | `modules/OCR/src/preprocess.py` | OpenCV image clean-up |
 | `modules/worker.py` | Background worker so the UI stays responsive |
 | `themes/` | Qt stylesheets |
-| `tools/make_icons.py` | Draws the logo and `icon.ico` |
+| `tools/make_icons.py` | Draws the logo, `icon.ico` and every UI icon in one shared style |
 | `examples/` | Sample output |
 
 ## Credits

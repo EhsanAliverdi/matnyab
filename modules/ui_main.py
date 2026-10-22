@@ -74,7 +74,7 @@ class Ui_MainWindow(object):
 "	background-position: centered;\n"
 "	background-repeat: no-repeat;\n"
 "}\n"
-"#titleLeftApp { font: 63 12pt \"Segoe UI Semibold\"; }\n"
+"#titleLeftApp { font: 600 12pt \"Segoe UI\"; }\n"
 "#titleLeftDescription { font: 8pt \"Segoe UI\"; color: rgb(189, 147, 249); }\n"
 "\n"
 "/* MENUS */\n"
@@ -91,8 +91,8 @@ class Ui_MainWindow(object):
 "	background-color: rgb(40, 44, 52);\n"
 "}\n"
 "#topMenu .QPushButton:pressed {	\n"
-"	background-color: rgb(189,"
-                        " 147, 249);\n"
+"	background-color: rgb(189, 147, 24"
+                        "9);\n"
 "	color: rgb(255, 255, 255);\n"
 "}\n"
 "#bottomMenu .QPushButton {	\n"
@@ -130,8 +130,8 @@ class Ui_MainWindow(object):
 "	background-color: rgb(40, 44, 52);\n"
 "}\n"
 "#toggleButton:pressed {\n"
-"	background-color: rgb(18"
-                        "9, 147, 249);\n"
+"	background-color: rgb(189, 147, "
+                        "249);\n"
 "}\n"
 "\n"
 "/* Title Menu */\n"
@@ -151,7 +151,7 @@ class Ui_MainWindow(object):
 "#extraIcon {\n"
 "	background-position: center;\n"
 "	background-repeat: no-repeat;\n"
-"	background-image: url(:/icons/images/icons/icon_settings.png);\n"
+"	background-image: url(:/icons/images/icons/nav_settings.png);\n"
 "}\n"
 "\n"
 "/* Label */\n"
@@ -164,8 +164,8 @@ class Ui_MainWindow(object):
 "\n"
 "/* Extra Content */\n"
 "#extraContent{\n"
-"	border-t"
-                        "op: 3px solid rgb(40, 44, 52);\n"
+"	border-top: 3px s"
+                        "olid rgb(40, 44, 52);\n"
 "}\n"
 "\n"
 "/* Extra Top Menus */\n"
@@ -197,8 +197,8 @@ class Ui_MainWindow(object):
 "\n"
 "/* Top Buttons */\n"
 "#rightButtons .QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
-"#rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-style"
-                        ": solid; border-radius: 4px; }\n"
+"#rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; "
+                        "border-radius: 4px; }\n"
 "#rightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }\n"
 "\n"
 "/* Theme Settings */\n"
@@ -225,8 +225,8 @@ class Ui_MainWindow(object):
 "}\n"
 "#contentSettings .QPushButton:pressed {	\n"
 "	background-color: rgb(189, 147, 249);\n"
-"	color: rgb(2"
-                        "55, 255, 255);\n"
+"	color: rgb(255, 255, "
+                        "255);\n"
 "}\n"
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
@@ -261,8 +261,8 @@ class Ui_MainWindow(object):
 "QHeaderView::section:horizontal\n"
 "{\n"
 "    border: 1px solid rgb(33, 37, 43);\n"
-"	background-colo"
-                        "r: rgb(33, 37, 43);\n"
+"	background-color: rgb(33"
+                        ", 37, 43);\n"
 "	padding: 3px;\n"
 "	border-top-left-radius: 7px;\n"
 "    border-top-right-radius: 7px;\n"
@@ -296,8 +296,8 @@ class Ui_MainWindow(object):
 "	border-radius: 5px;\n"
 "	padding: 10px;\n"
 "	selection-color: rgb(255, 255, 255);\n"
-"	selection-background-col"
-                        "or: rgb(255, 121, 198);\n"
+"	selection-background-color: rgb(2"
+                        "55, 121, 198);\n"
 "}\n"
 "QPlainTextEdit  QScrollBar:vertical {\n"
 "    width: 8px;\n"
@@ -335,8 +335,8 @@ class Ui_MainWindow(object):
 "    subcontrol-position: right;\n"
 "    subcontrol-origin: margin;\n"
 "}\n"
-""
-                        "QScrollBar::sub-line:horizontal {\n"
+"QScrollBa"
+                        "r::sub-line:horizontal {\n"
 "    border: none;\n"
 "    background: rgb(55, 63, 77);\n"
 "    width: 20px;\n"
@@ -372,8 +372,8 @@ class Ui_MainWindow(object):
 "	border-bottom-left-radius: 4px;\n"
 "    border-bottom-right-radius: 4px;\n"
 "     subcontrol-position: bottom;\n"
-"     su"
-                        "bcontrol-origin: margin;\n"
+"     subcontrol-"
+                        "origin: margin;\n"
 " }\n"
 " QScrollBar::sub-line:vertical {\n"
 "	border: none;\n"
@@ -405,10 +405,10 @@ class Ui_MainWindow(object):
 "    border: 3px solid rgb(58, 66, 81);\n"
 "}\n"
 "QCheckBox::indicator:checked {\n"
-"    background: 3px solid rgb(52, 59, 72);\n"
-"	border: 3px solid rgb(52, 59, 72);	\n"
-"	back"
-                        "ground-image: url(:/icons/images/icons/cil-check-alt.png);\n"
+"    background: 3px solid rgb(189, 147, 249);\n"
+"	border: 3px solid rgb(189, 147, 249);	\n"
+"	backgro"
+                        "und-image: url(:/icons/images/icons/ui_check_dark.png);\n"
 "}\n"
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
@@ -442,15 +442,15 @@ class Ui_MainWindow(object):
 "}\n"
 "QComboBox::drop-down {\n"
 "	subcontrol-origin: padding;\n"
-"	subco"
-                        "ntrol-position: top right;\n"
+"	subcontr"
+                        "ol-position: top right;\n"
 "	width: 25px; \n"
 "	border-left-width: 3px;\n"
 "	border-left-color: rgba(39, 44, 54, 150);\n"
 "	border-left-style: solid;\n"
 "	border-top-right-radius: 3px;\n"
 "	border-bottom-right-radius: 3px;	\n"
-"	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
+"	background-image: url(:/icons/images/icons/ui_chevron_down.png);\n"
 "	background-position: center;\n"
 "	background-repeat: no-reperat;\n"
 " }\n"
@@ -475,8 +475,8 @@ class Ui_MainWindow(object):
 "QSlider::handle:horizontal {\n"
 "    background-color: rgb(189, 147, 249);\n"
 "    border: none;\n"
-"    h"
-                        "eight: 10px;\n"
+"    heigh"
+                        "t: 10px;\n"
 "    width: 10px;\n"
 "    margin: 0px;\n"
 "	border-radius: 5px;\n"
@@ -514,8 +514,8 @@ class Ui_MainWindow(object):
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
 "CommandLinkButton */\n"
-"QCommandLi"
-                        "nkButton {	\n"
+"QCommandLinkBu"
+                        "tton {	\n"
 "	color: rgb(255, 121, 198);\n"
 "	border-radius: 5px;\n"
 "	padding: 5px;\n"
@@ -631,7 +631,7 @@ class Ui_MainWindow(object):
         self.toggleButton.setFont(font)
         self.toggleButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.toggleButton.setLayoutDirection(Qt.LeftToRight)
-        self.toggleButton.setStyleSheet(u"background-image: url(:/icons/images/icons/icon_menu.png);")
+        self.toggleButton.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_menu.png);")
 
         self.verticalLayout_4.addWidget(self.toggleButton)
 
@@ -654,7 +654,7 @@ class Ui_MainWindow(object):
         self.btn_home.setFont(font)
         self.btn_home.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_home.setLayoutDirection(Qt.LeftToRight)
-        self.btn_home.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-home.png);")
+        self.btn_home.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_home.png);")
 
         self.verticalLayout_8.addWidget(self.btn_home)
 
@@ -662,7 +662,7 @@ class Ui_MainWindow(object):
         self.btn_pdf.setObjectName(u"btn_pdf")
         self.btn_pdf.setMinimumSize(QSize(0, 45))
         self.btn_pdf.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_pdf.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-description.png);")
+        self.btn_pdf.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_pdf.png);")
 
         self.verticalLayout_8.addWidget(self.btn_pdf)
 
@@ -674,7 +674,7 @@ class Ui_MainWindow(object):
         self.btn_image.setFont(font)
         self.btn_image.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_image.setLayoutDirection(Qt.LeftToRight)
-        self.btn_image.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-image1.png);")
+        self.btn_image.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_image.png);")
 
         self.verticalLayout_8.addWidget(self.btn_image)
 
@@ -686,7 +686,7 @@ class Ui_MainWindow(object):
         self.btn_batch.setFont(font)
         self.btn_batch.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_batch.setLayoutDirection(Qt.LeftToRight)
-        self.btn_batch.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-layers.png);")
+        self.btn_batch.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_batch.png);")
 
         self.verticalLayout_8.addWidget(self.btn_batch)
 
@@ -709,7 +709,7 @@ class Ui_MainWindow(object):
         self.btn_settings.setFont(font)
         self.btn_settings.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_settings.setLayoutDirection(Qt.LeftToRight)
-        self.btn_settings.setStyleSheet(u"background-image: url(:/icons/images/icons/icon_settings.png);")
+        self.btn_settings.setStyleSheet(u"background-image: url(:/icons/images/icons/nav_settings.png);")
 
         self.verticalLayout_9.addWidget(self.btn_settings)
 
@@ -784,7 +784,7 @@ class Ui_MainWindow(object):
         self.minimizeAppBtn.setMaximumSize(QSize(28, 28))
         self.minimizeAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
-        icon.addFile(u":/icons/images/icons/icon_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/images/icons/win_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
         self.minimizeAppBtn.setIcon(icon)
         self.minimizeAppBtn.setIconSize(QSize(20, 20))
 
@@ -802,7 +802,7 @@ class Ui_MainWindow(object):
         self.maximizeRestoreAppBtn.setFont(font3)
         self.maximizeRestoreAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
-        icon1.addFile(u":/icons/images/icons/icon_maximize.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/icons/images/icons/win_maximize.png", QSize(), QIcon.Normal, QIcon.Off)
         self.maximizeRestoreAppBtn.setIcon(icon1)
         self.maximizeRestoreAppBtn.setIconSize(QSize(20, 20))
 
@@ -814,7 +814,7 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setMaximumSize(QSize(28, 28))
         self.closeAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon2 = QIcon()
-        icon2.addFile(u":/icons/images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/icons/images/icons/win_close.png", QSize(), QIcon.Normal, QIcon.Off)
         self.closeAppBtn.setIcon(icon2)
         self.closeAppBtn.setIconSize(QSize(20, 20))
 
