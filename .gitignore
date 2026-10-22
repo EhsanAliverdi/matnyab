@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# cx_Freeze build output
+build/
+dist/
+
+# OCR working files (scanned pages, intermediate images and text)
+modules/OCR/temp/
+modules/OCR/data/*
+!modules/OCR/data/.gitkeep
+modules/OCR/output/*
+!modules/OCR/output/.gitkeep
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
