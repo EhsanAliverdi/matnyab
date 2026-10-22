@@ -164,7 +164,7 @@ class MainWindow(QMainWindow):
                       single_file=o["single_file"], per_page_file=o["per_page"],
                       ms_world_output=o["msword"], plain_text_output=o["plain_text"],
                       langs=o["language"], dpi=self.config.get("dpi"),
-                      poppler_path=self.config.get("poppler_path"))
+                      poppler_path=self.config.poppler_path())
         except Exception as e:
             page.finished(False, f"Couldn't start: {e}")
             return
@@ -189,7 +189,41 @@ class MainWindow(QMainWindow):
         page.finished(False, f"Conversion failed: {value}")
 
 
+def run_self_test(input_path, report_path):
+    """Convert one file without the window and write a report. Used to check release builds."""
+    import json
+    import tempfile
+    from modules.config import check_language, check_poppler, check_tesseract
+
+    config = AppConfig()
+    config.apply_tesseract_cmd()
+    report = {
+        "tesseract": check_tesseract(),
+        "language": check_language("fas"),
+        "poppler": check_poppler(config.poppler_path()),
+    }
+    out = tempfile.mkdtemp(prefix="matnyab-selftest-")
+    try:
+        ocr(input_path, "FILE", out, single_file=True, per_page_file=False,
+            ms_world_output=True, plain_text_output=True,
+            langs="fas", dpi=config.get("dpi"), poppler_path=config.poppler_path()).main()
+        report["outputs"] = sorted(os.listdir(out))
+        texts = [f for f in report["outputs"] if f.endswith(".txt")]
+        with open(os.path.join(out, texts[0]), encoding="utf-8") as f:
+            report["text"] = f.read()
+    except Exception as e:
+        report["error"] = repr(e)
+    report["ok"] = all(report[k][0] for k in ("tesseract", "language", "poppler")) and bool(report.get("text", "").strip())
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    return 0 if report["ok"] else 1
+
+
 if __name__ == "__main__":
+    if "--self-test" in sys.argv:
+        i = sys.argv.index("--self-test")
+        sys.exit(run_self_test(sys.argv[i + 1], sys.argv[i + 2]))
+
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
     app.setWindowIcon(QIcon(os.path.join(BASE_DIR, "icon.ico")))

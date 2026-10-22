@@ -6,6 +6,16 @@ Point it at an image, a PDF or a whole folder of scans, and Matnyab cleans up ea
 runs it through Tesseract's Farsi model and saves the result as plain text and/or a
 Microsoft Word document.
 
+## Download
+
+Get the Windows installer from the
+[latest release](https://github.com/EhsanAliverdi/matnyab/releases/latest)
+(`Matnyab-Setup-<version>.exe`). It includes everything the app needs, including Tesseract OCR with
+Persian, Arabic and English data and Poppler for PDFs, so there's nothing else to install.
+
+The installer isn't code-signed yet, so Windows SmartScreen may warn about it:
+choose **More info → Run anyway**.
+
 ## Features
 
 - **Image OCR** – recognise a single `.png`, `.jpg`, `.jpeg` or `.tiff` image
@@ -29,7 +39,7 @@ Microsoft Word document.
 If Tesseract or Poppler aren't on your `PATH`, set their locations on the Settings page.
 The Home page shows whether everything was found.
 
-## Getting started
+## Running from source
 
 ```console
 pip install -r requirements.txt
@@ -47,12 +57,27 @@ pyside6-rcc resources.qrc -o modules/resources_rc.py
 
 Then change `import resources_rc` at the top of `modules/ui_main.py` to `from .resources_rc import *`.
 
-## Building an executable
+## Building the installer
+
+The installer is built automatically by GitHub Actions
+([.github/workflows/release.yml](.github/workflows/release.yml)) when a version tag is pushed:
+
+1. Set `APP_VERSION` in `modules/config.py`, e.g. `0.2.0`
+2. Commit, then tag and push: `git tag v0.2.0` and `git push origin v0.2.0`
+
+The workflow builds the app, tests the packaged build on a sample PDF, and publishes a release
+with the installer attached.
+
+To build locally you need Python 3.9, Tesseract (with `fas`, `ara`, `eng` and `osd` data),
+Poppler and, for the installer step, [Inno Setup 6](https://jrsoftware.org/isinfo.php):
 
 ```console
-pip install cx_Freeze
-python setup.py build
+python -m venv .venv
+.venv\Scripts\pip install -r requirements-build.txt
+.venv\Scripts\python packaging/build.py --poppler-dir "C:\path	o\poppler\Libraryin"
 ```
+
+The app is written to `dist/Matnyab/` and the installer to `dist/Matnyab-Setup-<version>.exe`.
 
 ## Project layout
 
@@ -66,6 +91,7 @@ python setup.py build
 | `modules/OCR/src/preprocess.py` | OpenCV image clean-up |
 | `modules/worker.py` | Background worker so the UI stays responsive |
 | `themes/` | Qt stylesheets |
+| `packaging/` | PyInstaller spec, Inno Setup script and build script for the Windows installer |
 | `tools/make_icons.py` | Draws the logo, `icon.ico` and every UI icon in one shared style |
 | `examples/` | Sample output |
 

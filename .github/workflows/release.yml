@@ -1,0 +1,91 @@
+name: Build Windows installer
+
+# Push a tag like v0.1.0 to build the installer and publish it as a GitHub Release.
+# Running it by hand (Actions tab > Run workflow) builds the installer as a downloadable artifact only.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      TESSDATA_URL: https://github.com/tesseract-ocr/tessdata_fast/raw/main
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Check the tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path modules/config.py -Pattern 'APP_VERSION = "(.+)"').Matches[0].Groups[1].Value
+          if ("v$version" -ne "${{ github.ref_name }}") {
+            throw "Tag ${{ github.ref_name }} does not match APP_VERSION $version in modules/config.py"
+          }
+
+      - name: Install Python packages
+        run: pip install -r requirements-build.txt
+
+      - name: Install Tesseract and language data
+        shell: pwsh
+        run: |
+          choco install tesseract -y --no-progress
+          $tessdata = "C:\Program Files\Tesseract-OCR\tessdata"
+          foreach ($lang in "fas", "ara", "eng", "osd") {
+            if (-not (Test-Path "$tessdata\$lang.traineddata")) {
+              Invoke-WebRequest "$env:TESSDATA_URL/$lang.traineddata" -OutFile "$tessdata\$lang.traineddata"
+            }
+          }
+
+      - name: Install Poppler
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo oschwartz10612/poppler-windows --pattern "Release-*.zip" --dir poppler-zip
+          Expand-Archive (Get-ChildItem poppler-zip\*.zip)[0].FullName -DestinationPath poppler-dl
+          $bin = (Get-ChildItem poppler-dl -Recurse -Filter pdftoppm.exe)[0].DirectoryName
+          "POPPLER_BIN=$bin" >> $env:GITHUB_ENV
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build app and installer
+        run: python packaging/build.py --poppler-dir "${{ env.POPPLER_BIN }}"
+
+      - name: Self-test the packaged app
+        shell: pwsh
+        run: |
+          # Lay the files out as the installer does, then convert a sample PDF
+          Copy-Item dist\Matnyab build\installed -Recurse
+          Copy-Item build\stage\tesseract, build\stage\poppler build\installed -Recurse
+          $p = Start-Process build\installed\Matnyab.exe -Wait -PassThru `
+               -ArgumentList "--self-test", "$PWD\packaging\selftest.pdf", "$PWD\build\selftest.json"
+          Get-Content build\selftest.json
+          if ($p.ExitCode -ne 0) { throw "Self-test failed" }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Matnyab-installer
+          path: dist/Matnyab-Setup-*.exe
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Matnyab-Setup-*.exe
+          body: |
+            ## Install
+            Download the **Matnyab-Setup** `.exe` file below, run it, and follow the steps.
+            Everything Matnyab needs (Tesseract OCR with Persian, Arabic and English data, and Poppler for PDFs) is included.
+
+            Windows may show a SmartScreen warning because the installer isn't code-signed yet:
+            choose **More info → Run anyway**.

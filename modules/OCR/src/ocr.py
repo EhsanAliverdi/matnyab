@@ -1,6 +1,9 @@
 import os,shutil
 import re
+import subprocess
+import sys
 import pytesseract
+import pdf2image.pdf2image
 from pdf2image import convert_from_path
 from .preprocess import *
 import tempfile
@@ -11,6 +14,18 @@ from shutil import copyfile
 from pathlib import Path
 from docx import Document
 from docx.shared import Inches
+
+
+# pdf2image runs Poppler without hiding its console window, which flashes a
+# black window for every page in the packaged (windowed) app
+if sys.platform == "win32":
+    _Popen = pdf2image.pdf2image.Popen
+
+    def _hidden_popen(*args, **kwargs):
+        kwargs.setdefault("creationflags", subprocess.CREATE_NO_WINDOW)
+        return _Popen(*args, **kwargs)
+
+    pdf2image.pdf2image.Popen = _hidden_popen
 
 
 LANGS = "fas"  # Languages for OCR eng+fas

@@ -234,7 +234,7 @@ class HomePage(ScrollPage):
         checks = [(tess_ok, tess_msg)]
         if tess_ok:
             checks.append(check_language(self.config.get("language")))
-        checks.append(check_poppler(self.config.get("poppler_path")))
+        checks.append(check_poppler(self.config.poppler_path()))
         for ok, msg in checks:
             self.status_layout.addWidget(status_label(ok, msg))
 
@@ -507,13 +507,13 @@ class SettingsPage(ScrollPage):
 
         # External tools
         tools, tl = card("OCR tools")
-        tl.addWidget(self._label("Tesseract program (leave empty to use the one on PATH)"))
+        tl.addWidget(self._label("Tesseract program (leave empty to use the built-in one)"))
         self.tesseract = PathField("e.g. C:\\Program Files\\Tesseract-OCR\\tesseract.exe", "exe")
         self.tesseract.setText(config.get("tesseract_cmd"))
         self.tesseract.edit.editingFinished.connect(self._tools_changed)
         self.tesseract.button.clicked.connect(self._tools_changed)
         tl.addWidget(self.tesseract)
-        tl.addWidget(self._label("Poppler bin folder, for reading PDFs (leave empty to use PATH)"))
+        tl.addWidget(self._label("Poppler bin folder, for reading PDFs (leave empty to use the built-in one)"))
         self.poppler = PathField("e.g. C:\\Program Files\\poppler\\Library\\bin")
         self.poppler.setText(config.get("poppler_path"))
         self.poppler.edit.editingFinished.connect(self._tools_changed)
@@ -570,4 +570,4 @@ class SettingsPage(ScrollPage):
         self.tool_status.addWidget(status_label(tess_ok, tess_msg))
         if tess_ok:
             self.tool_status.addWidget(status_label(*check_language(self.config.get("language"))))
-        self.tool_status.addWidget(status_label(*check_poppler(self.config.get("poppler_path"))))
+        self.tool_status.addWidget(status_label(*check_poppler(self.config.poppler_path())))
